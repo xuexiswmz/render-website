@@ -1,5 +1,9 @@
+import DashboardPage from "./dashboard/page";
+
 export default function HomePage() {
   return (
-    <div>HomePage</div>
+    <div>
+        <DashboardPage/>
+    </div>
   )
 }

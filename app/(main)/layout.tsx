@@ -11,12 +11,12 @@ export default function MainLayout({
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
       
-      <header className="h-10 shrink-0 border-b">
+      <header className="h-10 shrink-0 rounded-md mb-1 border-b">
         <MainHeader />
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className="w-64 shrink-0 border-r">
+        <aside className="w-64 shrink-0 border-r rounded-md">
             <LeftSidebar />
         </aside>
 
@@ -27,7 +27,7 @@ export default function MainLayout({
             </div>
         </main>
 
-        <aside className="w-72 shrink-0 border-l">
+        <aside className="w-72 shrink-0 border-l rounded-md">
             <RightPanel />
         </aside>
       </div>
