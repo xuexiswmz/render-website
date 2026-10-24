@@ -15,20 +15,18 @@ export default function MainLayout({
         <MainHeader />
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="w-64 shrink-0 border-r rounded-md">
-            <LeftSidebar />
+      <div className="flex flex-1 min-h-0 overflow-hidden">
+        <aside className="border rounded-md">
+          <LeftSidebar />
         </aside>
 
         {/* 中栏：渲染 children，并包裹在可滚动容器中 */}
-        <main className="flex-1 overflow-y-auto">
-            <div className="">
-                {children}
-            </div>
+        <main className="flex-1 min-w-0 overflow-y-auto rounded-md">
+          {children}
         </main>
 
-        <aside className="w-72 shrink-0 border-l rounded-md">
-            <RightPanel />
+        <aside className="w-72 shrink-0 border rounded-md">
+          <RightPanel />
         </aside>
       </div>
     </div>
