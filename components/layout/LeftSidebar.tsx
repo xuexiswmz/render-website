@@ -1,12 +1,21 @@
 'use client'
 
-import { Blocks, ChevronRight, ChevronLeft, Folder, Puzzle } from "lucide-react"
+import { Blocks, ChevronRight, ChevronLeft, Folder, Puzzle, Bot } from "lucide-react"
 import { useState } from "react"
 import { Button } from "../ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Separator } from "../ui/separator"
 
-export default function LeftSidebar() {
+interface LeftSidebarProps {
+  isChatOpen: boolean;
+  onOpenChat: () => void;
+}
+
+
+export default function LeftSidebar({
+  isChatOpen,
+  onOpenChat
+}:LeftSidebarProps) {
   const [isExpand, setIsExpand] = useState(true)
   const menuItems = [
     {icon:Folder, label: 'code'},
@@ -33,6 +42,19 @@ export default function LeftSidebar() {
             <Button variant="ghost" className="w-10 h-10 border-none" onClick={()=>setIsExpand(!isExpand)}>
               {isExpand ? <ChevronLeft /> : <ChevronRight />}
             </Button>
+            
+            {/* Chat 关闭时才出现 Bot */}
+            {!isChatOpen && (
+              <Button
+                variant="ghost"
+                className="w-10 h-10 border-none"
+                onClick={onOpenChat}
+                title="打开 AI Chat"
+              >
+                <Bot className="size-5" />
+              </Button>
+            )}
+
             <Separator className="my-2" />
             {menuItems.map((item)=>{
               const Icon = item.icon
