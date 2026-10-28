@@ -27,7 +27,7 @@ export default function LeftSidebar({
         relative
         flex h-full shrink-0
         transition-[width] duration-300 ease-in-out
-        ${isExpand ? "w-64" : "w-0"}
+        ${isExpand ? "w-full" : "w-0"}
       `}>
         <div className={`flex flex-col items-center shrink-0 transition-colors duration-300 
             ${isExpand ? "w-15 h-full py-2": `
