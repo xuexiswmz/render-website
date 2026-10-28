@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 
 import { ArrowUpIcon, PlusIcon } from 'lucide-react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '../ui/input-group'
-export default function ChatFooter() {
+
+interface ChatFooterProps {
+  onSend: (text: string) => void;
+  busy: boolean;
+}
+export default function ChatFooter({onSend,busy}:ChatFooterProps) {
         
     const [text, setText] = React.useState('')
     const canSend = text.trim().length > 0
@@ -10,10 +17,13 @@ export default function ChatFooter() {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-            if (!canSend) return
-            console.log('submit', text)
-            setText('')
+         const value = text.trim();
+        if (!value || busy) return;
+        onSend(value);
+        setText('');
     }
+    
+  const [input, setInput] = useState('');
   return (
     <footer className=" w-full items-center flex shrink-0">
             <form ref={formRef} onSubmit={onSubmit} className="w-full">
@@ -39,7 +49,7 @@ export default function ChatFooter() {
                         size="icon-sm"
                         variant="default"
                         className="ml-auto rounded-full"
-                        disabled={!canSend}
+                        disabled={!text.trim() || busy}
                         aria-label="Send"
                     >
                         <ArrowUpIcon />

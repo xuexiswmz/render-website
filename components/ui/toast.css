@@ -1,0 +1,87 @@
+.app-toast-viewport {
+  position: fixed;
+  inset-inline: 1rem;
+  top: max(4rem, env(safe-area-inset-top));
+  z-index: 100;
+  width: min(24rem, calc(100% - 2rem));
+  margin-inline: auto;
+  outline: none;
+  pointer-events: none;
+}
+
+.app-toast {
+  --gap: 8px;
+  --height: var(--toast-frontmost-height, var(--toast-height));
+  --scale: max(0, 1 - var(--toast-index) * 0.05);
+  --stack-y: calc(var(--toast-index) * 8px + (1 - var(--scale)) * var(--height));
+  --expanded-y: calc(var(--toast-offset-y) + var(--toast-index) * var(--gap));
+  --position-y: var(--stack-y);
+
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  z-index: calc(1000 - var(--toast-index));
+  width: 100%;
+  height: var(--height);
+  pointer-events: auto;
+  transform-origin: top center;
+  transform: translate(var(--toast-swipe-movement-x), calc(var(--position-y) + var(--toast-swipe-movement-y))) scale(var(--scale));
+  transition: transform 250ms ease, opacity 200ms ease, height 150ms ease;
+}
+
+/* Bridge each gap so moving between expanded messages keeps them open. */
+.app-toast::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: calc(var(--gap) + 1px);
+}
+
+.app-toast[data-expanded] {
+  --position-y: var(--expanded-y);
+  height: var(--toast-height);
+  transform: translate(var(--toast-swipe-movement-x), calc(var(--position-y) + var(--toast-swipe-movement-y)));
+}
+
+.app-toast[data-limited] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.app-toast[data-ending-style] {
+  pointer-events: none;
+}
+
+.app-toast[data-starting-style],
+.app-toast[data-ending-style]:not([data-swipe-direction]) {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.app-toast[data-ending-style][data-swipe-direction="left"] {
+  opacity: 0;
+  transform: translate(calc(var(--toast-swipe-movement-x) - 150%), var(--position-y));
+}
+
+.app-toast[data-ending-style][data-swipe-direction="right"] {
+  opacity: 0;
+  transform: translate(calc(var(--toast-swipe-movement-x) + 150%), var(--position-y));
+}
+
+.app-toast[data-ending-style][data-swipe-direction="up"] {
+  opacity: 0;
+  transform: translateY(calc(var(--position-y) + var(--toast-swipe-movement-y) - 150%));
+}
+
+.app-toast[data-ending-style][data-swipe-direction="down"] {
+  opacity: 0;
+  transform: translateY(calc(var(--position-y) + var(--toast-swipe-movement-y) + 150%));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-toast {
+    transition: none;
+  }
+}
