@@ -1,22 +1,24 @@
 'use client'
 
 import { Blocks, ChevronRight, ChevronLeft, Folder, Puzzle, Bot } from "lucide-react"
-import { useState } from "react"
 import { Button } from "../ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Separator } from "../ui/separator"
 
 interface LeftSidebarProps {
+  isExpand: boolean;
+  onToggleExpand: () => void;
   isChatOpen: boolean;
   onOpenChat: () => void;
 }
 
 
 export default function LeftSidebar({
+  isExpand,
+  onToggleExpand,
   isChatOpen,
   onOpenChat
 }:LeftSidebarProps) {
-  const [isExpand, setIsExpand] = useState(true)
   const menuItems = [
     {icon:Folder, label: 'code'},
     {icon:Blocks, label: 'components'},
@@ -39,7 +41,7 @@ export default function LeftSidebar({
             `}
           `}>
           <div className="p-2 flex flex-col">
-            <Button variant="ghost" className="w-10 h-10 border-none" onClick={()=>setIsExpand(!isExpand)}>
+            <Button variant="ghost" className="w-10 h-10 border-none" onClick={onToggleExpand}>
               {isExpand ? <ChevronLeft /> : <ChevronRight />}
             </Button>
             

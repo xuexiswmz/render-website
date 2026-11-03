@@ -14,6 +14,14 @@ export default function MainLayout({
 }) {
   const [isChatOpen, setIsChatOpen] = useState(true)
   const chatPanelRef = usePanelRef();
+  const [isExpand, setIsExpand] = useState(true)
+  const sidebarPanelRef = usePanelRef()
+
+  useEffect(() => {
+    const panel = sidebarPanelRef.current
+    if (isExpand) panel?.expand()
+    else panel?.collapse()
+  }, [isExpand, sidebarPanelRef])
 
   useEffect(() => {
     const panel = chatPanelRef.current;
@@ -29,16 +37,27 @@ export default function MainLayout({
 
       <ResizablePanelGroup orientation="horizontal" className="flex flex-1 min-h-0 overflow-hidden">
         <ResizablePanel
+          panelRef={sidebarPanelRef}
+          collapsible
+          collapsedSize="0px"
           defaultSize="256px"
-          className="overflow-hidden rounded-md border"
+          onResize={(size) => setIsExpand(size.inPixels > 0)}
+          style={{overflow: isExpand ? 'hidden' : 'visible'}}
+          className={`rounded-md ${isExpand ? '' : ''}`}
         >
           <LeftSidebar
+            isExpand={isExpand}
+            onToggleExpand={() => setIsExpand((value) => !value)}
             isChatOpen={isChatOpen}
             onOpenChat={() => setIsChatOpen(true)}
           />
         </ResizablePanel>
 
-        <ResizableHandle withHandle />
+        <ResizableHandle 
+          withHandle 
+          disabled={!isExpand}
+          className={isExpand ? undefined : 'hidden'}
+        />
 
         {/* 中栏：渲染 children，并包裹在可滚动容器中 */}
         <ResizablePanel minSize="25%" className="min-w-0 overflow-y-auto rounded-md">
